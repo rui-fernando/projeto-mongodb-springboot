@@ -1,20 +1,14 @@
 package com.educandoweb.workshopmongo.resources;
 
 import com.educandoweb.workshopmongo.domain.Post;
-import com.educandoweb.workshopmongo.domain.User;
-import com.educandoweb.workshopmongo.dto.UserDTO;
-import com.educandoweb.workshopmongo.repositories.UserRepository;
 import com.educandoweb.workshopmongo.resources.util.URL;
 import com.educandoweb.workshopmongo.services.PostService;
-import com.educandoweb.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/posts")
@@ -40,5 +34,17 @@ public class PostResource {
         return ResponseEntity.ok().body(list);
     }
 
+    @GetMapping("/fullsearch")
+    public ResponseEntity<List<Post>> fullSearch(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String minDate,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate){
 
+        text = URL.decodeParam(text);
+        Date min = URL.convertDate(minDate, new Date(0L));
+        Date max = URL.convertDate(maxDate, new Date());
+        List<Post> list = service.fullSearch(text, min, max);
+
+        return ResponseEntity.ok().body(list);
+    }
 }
