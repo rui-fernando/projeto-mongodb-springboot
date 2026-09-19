@@ -2,6 +2,7 @@ package com.educandoweb.workshopmongo.config;
 
 import com.educandoweb.workshopmongo.domain.Post;
 import com.educandoweb.workshopmongo.domain.User;
+import com.educandoweb.workshopmongo.dto.AuthorDTO;
 import com.educandoweb.workshopmongo.repositories.PostRepository;
 import com.educandoweb.workshopmongo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +41,18 @@ public class Instantiation implements CommandLineRunner {
         User alex = new User(null, "Alex Green", "alex@gmail.com");
         User rui = new User(null, "Rui Fernando", "rui@gmail.com");
 
+        userRepository.saveAll(Arrays.asList(maria, alex, rui));
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         Post post1 = new Post(null, sdf.parse("21/03/2026"), "Partiu viagem",
-                "Vou viajar para Jacumã. Abraços!", rui);
+                "Vou viajar para Jacumã. Abraços!", new AuthorDTO(rui));
 
         Post post2 = new Post(null, sdf.parse("25/03/2026"), "Bom dia",
-                "Acordei feliz hoje.", maria);
+                "Acordei feliz hoje.", new AuthorDTO(maria));
 
-        userRepository.saveAll(Arrays.asList(maria, alex, rui));
         postRepository.saveAll(Arrays.asList(post1, post2));
 
         System.out.println("--- DADOS SALVOS COM SUCESSO PELO SPRING! ---");
