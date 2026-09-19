@@ -1,5 +1,6 @@
 package com.educandoweb.workshopmongo.resources;
 
+import com.educandoweb.workshopmongo.domain.Post;
 import com.educandoweb.workshopmongo.domain.User;
 import com.educandoweb.workshopmongo.dto.UserDTO;
 import com.educandoweb.workshopmongo.repositories.UserRepository;
@@ -68,6 +69,13 @@ public class UserResource {
         obj = service.update(obj);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id){
+
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 
     @GetMapping("/debug")
